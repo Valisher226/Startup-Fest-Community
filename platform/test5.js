@@ -1,0 +1,23 @@
+// v5 checks: content composer, publishing, launch review, calendar, cards
+const base = require('./test4.js');
+module.exports = async (h) => { await base(h); const { ok, $, $$, click, go, setRole, submit, wait, w } = h, SF = w.SF;
+  await setRole('participant'); await go('#/home'); click($('[data-act="sharelaunch"]')); await wait(10); $('#ln-t').value = 'First 50 paying farmers'; submit($('#launch-form')); await wait(10);
+  ok(SF.S.launchQueue.some(q => q.t === 'First 50 paying farmers'), 'participant shares a launch for review');
+  await setRole('org'); await go('#/content'); ok($('#view').innerHTML.includes('tgtext'), 'content page shows the Telegram preview');
+  const pool = SF.digestPool().length; $('#ex-t').value = 'Hackathon in Termez'; $('#ex-s').value = '15 Nov · prize 20M UZS'; submit($('#extra-form')); await wait(10);
+  ok(SF.digestPool().length === pool + 1 && SF.postText('mon', 'en').includes('Hackathon in Termez'), 'extra item added to the Monday digest');
+  click($('[data-act="postlang"][data-l="ru"]')); await wait(10); ok(SF.postText('mon', 'ru').includes('Дайджест'), 'post text renders in Russian');
+  click($('[data-act="publish"][data-slot="mon"]')); await wait(10); ok(SF.S.pub.mon.some(x => x.t === 'Hackathon in Termez') && SF.S.posts[0].week === '27 Oct', 'Monday digest published');
+  await setRole('participant'); await go('#/home'); ok($('#view').innerHTML.includes('Hackathon in Termez'), 'members see the published digest');
+  await setRole('org'); await go('#/content'); click($('[data-act="filter"][data-k="cslot"][data-v="wed"]')); await wait(10);
+  const radio = $$('input[data-act="pickitem"][data-slot="wed"]')[1]; radio.checked = true; radio.dispatchEvent(new w.Event('change', { bubbles: true })); await wait(10);
+  click($('[data-act="publish"][data-slot="wed"]')); await wait(10); ok(SF.S.pub.wed && SF.S.pub.wed.t === SF.wedPool()[1].t, 'problem of the week published');
+  click($('[data-act="filter"][data-k="cslot"][data-v="thu"]')); await wait(10); const qid = SF.S.launchQueue.find(q => q.t === 'First 50 paying farmers').id; click($(`[data-act="approve"][data-id="${qid}"]`)); await wait(10);
+  ok(SF.S.approved.length >= 1 && SF.S.launchQueue.length < 2, 'launch approved into Thursday');
+  click($('[data-act="publish"][data-slot="thu"]')); await wait(10); ok(SF.S.pub.thu.some(x => x.t === 'First 50 paying farmers'), 'Thursday launches published with the approved one');
+  click($('[data-act="filter"][data-k="ctab"][data-v="calendar"]')); await wait(10); ok($('#view').innerHTML.includes('<svg') && $('#view').innerHTML.includes('Published') || $('#view').innerHTML.includes(SF.t('Published')), 'calendar with reach chart');
+  $('#vw-n').value = '3500'; submit($('#views-form')); await wait(10); ok(SF.S.posts.some(p => p.views === 3500), 'views logged');
+  click($('[data-act="planslot"]')); await wait(10); ok(Object.values(SF.S.plan).includes('planned'), 'slot planned');
+  click($('[data-act="filter"][data-k="ctab"][data-v="cards"]')); await wait(10); ok(!!$('#igcard') && !!$('#card-form'), 'Instagram card editor renders');
+  $('#cd-b').value = 'Custom headline'; submit($('#card-form')); await wait(10); ok(SF.S.cardText.b === 'Custom headline', 'card text saved');
+};

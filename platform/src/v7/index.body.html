@@ -1,0 +1,35 @@
+<header class="top" id="top">
+  <div class="navbar">
+    <a href="#/home" aria-label="Startup Fest"><img class="logo" alt="Startup Fest" src="assets/img/startupfest-logo.svg"></a>
+    <span class="demo" id="demotag">DEMO v7</span>
+    <nav class="tabs" aria-label="Sections"><div id="tabs"></div></nav>
+    <div class="right">
+      <div class="langs" id="langs" role="group" aria-label="Language">
+        <button data-act="setlang" data-l="uz" aria-pressed="false">UZ</button>
+        <button data-act="setlang" data-l="ru" aria-pressed="false">RU</button>
+        <button data-act="setlang" data-l="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="bell" id="bell" data-act="bell" aria-label="Notifications">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg>
+        <span class="count" id="bellcount" hidden></span>
+      </button>
+      <div class="viewas" hidden><label for="role">Viewing as</label><select id="role"><option value="participant">Participant</option><option value="mentor">Mentor</option><option value="investor">Investor</option><option value="company">Company</option><option value="sme">Small business</option><option value="scout">Scouting partner</option><option value="org">Org team</option></select></div>
+      <div class="usermenu" id="usermenu"></div>
+      <button class="join" data-act="join" id="joinbtn"><span id="jointxt">Ro‘yhatdan o‘tish</span><img src="assets/img/vector9.svg" alt=""></button>
+      <button class="burger" data-act="burger" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 8h12M6 12h12M6 16h8"/></svg></button>
+    </div>
+  </div>
+</header>
+<div id="bellpanel" hidden></div>
+<main><div class="wrap" id="view"></div></main>
+<footer class="site-foot"><div class="foot-frame">
+  <div class="foot-in">
+    <div><img src="assets/img/startupfest-logo-footer.svg" alt="Startup Fest" style="height:56px"><p class="muted small" id="foot-about" style="max-width:36ch"></p></div>
+    <div id="foot-nav"></div>
+    <div><h4 id="foot-contact">Aloqa</h4><a href="https://t.me/startupfestuz">t.me/startupfestuz</a><span class="small muted">Alisher Navoiy ko‘chasi 11, Toshkent</span>
+      <div class="socials"><span><img src="assets/img/icon-telegram.svg" alt="Telegram"></span><span><img src="assets/img/icon-instagram.svg" alt="Instagram"></span><span><img src="assets/img/icon-linkedin.svg" alt="LinkedIn"></span></div></div>
+  </div>
+  <div id="demotools"></div>
+</div></footer>
+<input type="file" id="importfile" accept="application/json,.json" hidden>
+<div id="layer"></div>

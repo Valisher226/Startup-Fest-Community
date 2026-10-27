@@ -1,0 +1,11 @@
+i18n.js
+i18n_uz.js
+i18n_ru.js
+data.js
+data3.js
+ui.js
+store.js
+views.js
+views3.js
+app.js
+app3.js

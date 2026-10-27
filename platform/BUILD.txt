@@ -1,0 +1,24 @@
+How the demo is built
+- src/vN/ holds each version: index.body.html, app.css, the JS files and scripts.txt (the load order).
+- vendor/ holds the offline fonts and the QR library; img/ holds the logo and hero photo.
+- Build a version:  python3 package.py src/v10 v10 build
+  This writes vN/StartupFest-Platform-vN/ and the .zip.
+- Tests (needs Node and: npm install jsdom@24):
+  node test.js <path to index.html>                      v2 core flows
+  EXTRA=$PWD/test3.js node test.js <path to index.html>  v2 + v3 flows
+  node crawl_lang.js <path to index.html>                every page in Uzbek and Russian
+  node collect.js <path to index.html>                   lists every string to translate (keys.json)
+- Translations: src/v3/i18n_uz.js and i18n_ru.js. The English text is the key; missing keys fall back to English.
+
+v4 and v5
+- src/v4 and src/v5 have their own fonts.css (Big Shoulders, Urbanist, Oswald for Cyrillic) and img/ (website assets) that package.py copies in.
+- Tests: EXTRA=$PWD/test5.js node test.js <v5 index.html> runs every check from v2 to v5 (105 checks).
+- Screenshots need puppeteer-core (npm install puppeteer-core@22). shot_local.js takes route@width@height, with optional ?filters, for example "content?ctab=cards&ctpl=wed".
+
+v6 to v10
+- From v6 the demo opens on a Sign in page; each member type has its own login. The demo logins live in src/vN/data6.js (SF.DEMO_ACCOUNTS); LOGINS.txt is generated from them:
+  node mklogins.js src/v10 > src/v10/LOGINS.txt   (package.py copies LOGINS.txt into the folder and zip)
+- Tests: EXTRA=./test10.js node test.js <v10 index.html> runs every check from v2 to v10 (313 checks). Each testN.js requires the previous one.
+- publish.py vN "summary" copies a built version from build/ to the Platform Demo folder, updates START HERE.html, README.txt and LOGINS.txt, and syncs this _source folder.
+- measure.js checks that the menu fits for every member type and language at 1360/1440/1600 px.
+- misscheck.sh vN lists strings missing from the Uzbek or Russian dictionaries for a build in build/.

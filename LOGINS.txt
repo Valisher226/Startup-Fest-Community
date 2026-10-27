@@ -1,0 +1,30 @@
+STARTUP FEST PLATFORM V10 — DEMO LOGINS
+
+Open index.html, choose your member type on the Sign in page, then use the login below.
+Each member type has its own login page. A login only works on the page for its own type.
+
+Member type         Login (email)                     Password
+--------------------------------------------------------------------
+Participant         aziza@demo.startupfest.uz         Founder#2026
+Mentor              bekzod@demo.startupfest.uz        Mentor#2026
+Investor            dilnoza@demo.startupfest.uz       Investor#2026
+Company             agrovodiy@demo.startupfest.uz     Company#2026
+Small business      buxoroipak@demo.startupfest.uz    Business#2026
+Scouting partner    scouting@demo.startupfest.uz      Scout#2026
+Org team            team@demo.startupfest.uz          Team#2026
+
+Who is behind each account (sample people, all fictional):
+- Participant: Aziza Rahimova
+- Mentor: Bekzod Tursunov
+- Investor: Dilnoza Karimova
+- Company: Rustam Aliev (AgroVodiy Holding)
+- Small business: Nodira Yusupova (Buxoro Ipak)
+- Scouting partner: Kamola Ergasheva (Silk Road Bank)
+- Org team: Valijon Narimov (Startup Fest team)
+
+Org team: after the password the demo asks for a 6-digit code (as if sent to Telegram). The code is shown on screen.
+Security: 5 wrong passwords lock that login for 15 minutes (Reset demo clears it).
+
+New accounts: click "Create account" to try the step-by-step sign-up. New accounts are saved in this browser only.
+Passwords you change inside the demo are saved in this browser. "Reset demo" (bottom of any page) restores the logins above.
+Demo only: these are not real accounts and the demo stores passwords in the browser.

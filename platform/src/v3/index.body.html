@@ -1,0 +1,27 @@
+<header class="top">
+  <div class="wrap">
+    <a href="#/home"><img class="logo" alt="Startup Fest" src="assets/img/logo.png"></a>
+    <span class="demo" id="demotag">DEMO v3</span>
+    <div class="spacer"></div>
+    <div class="lang"><label class="sr" for="lang">Language</label><select id="lang"><option value="uz">O‘zbekcha</option><option value="ru">Русский</option><option value="en">English</option></select></div>
+    <button class="bell" id="bell" data-act="bell" aria-label="Notifications">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg>
+      <span class="count" id="bellcount" hidden></span>
+    </button>
+    <div class="viewas"><label for="role">Viewing as</label>
+      <select id="role">
+        <option value="participant">Participant</option>
+        <option value="mentor">Mentor</option>
+        <option value="investor">Investor</option>
+        <option value="company">Company</option>
+        <option value="org">Org team</option>
+      </select>
+    </div>
+  </div>
+</header>
+<div id="bellpanel" hidden></div>
+<nav class="tabs" aria-label="Sections"><div class="wrap" id="tabs"></div></nav>
+<main><div class="wrap" id="view"></div></main>
+<footer class="demo-foot"><div class="wrap" id="demotools"></div></footer>
+<input type="file" id="importfile" accept="application/json,.json" hidden>
+<div id="layer"></div>
