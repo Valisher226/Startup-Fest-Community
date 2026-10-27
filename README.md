@@ -37,7 +37,7 @@ These are demo accounts only. What you do is saved in your own browser; "Reset d
 | v9 | Telegram bot and mini-app (simulated), tickets and payments, offline check-in |
 | v10 | Catalyst franchise: partner countries, playbook builder, analytics, language packs, impact report |
 
-`demo/` is v10, which includes everything above. The full plan is in [`ROADMAP.md`](ROADMAP.md); `demo/README.txt` explains what to click.
+`demo/` is v10, which includes everything above. The full plan, including the proposed v11–v20 for the real platform, is in [`ROADMAP.md`](ROADMAP.md); `demo/README.txt` explains what to click.
 
 All people, startups, companies and numbers are sample data, except 14 regions and the $410K in Catalyst deals. Partner countries in v10 are examples, not agreements. Uzbek and Russian texts are draft translations.
 
