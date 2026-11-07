@@ -6,7 +6,7 @@ const html = fs.readFileSync(file, 'utf8').replace(/<script src="assets\/js\/([^
   f === 'qrcode.min.js' ? '<script>window.QRCode=function(el){el.textContent="QR"}</script>' : `<script>${fs.readFileSync(path.join(dir, 'assets/js', f), 'utf8')}</script>`);
 const errors = [];
 const vc = new (require('jsdom').VirtualConsole)(); vc.on('jsdomError', e => { if (!/Not implemented: HTMLCanvasElement/.test(e.message)) console.error(e.message, process.env.STACK ? (e.detail && e.detail.stack || e.stack || '').split('\n').slice(0,4).join(' | ') : ''); });
-const dom = new JSDOM(html, { runScripts: 'dangerously', url: 'http://localhost/index.html', pretendToBeVisual: true, virtualConsole: vc });
+const dom = new JSDOM(html, { runScripts: 'dangerously', url: 'http://localhost/index.html', pretendToBeVisual: true, virtualConsole: vc, beforeParse: win => { win.fetch = (u, o) => fetch(u, o); } });
 const w = dom.window, d = w.document;
 w.addEventListener('error', e => errors.push(e.message));
 w.scrollTo = () => {}; w.URL.createObjectURL = () => 'blob:demo';

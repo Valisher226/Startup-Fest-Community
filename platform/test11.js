@@ -9,9 +9,29 @@ module.exports = async (h) => { await base(h); const { ok, $, $$, click, go, set
   const view = () => $('#view').innerHTML;
   // menu and access
   await setRole('org'); ok(SF.NAV.org.includes('portfolio') && !!$('#tabs a[href="#/portfolio"]'), 'org menu has Portfolio');
-  await setRole('participant'); await go('#/portfolio'); ok(w.location.hash.startsWith('#/noaccess'), 'members cannot open the portfolio');
+  ok(Object.values(SF.NAV).every(n => n.includes('portfolio')), 'every member type has Portfolio in the menu');
+  await setRole('participant'); await go('#/portfolio');
+  if (!process.env.SF_TEST_SKIP_LIVE) { ok(await until(() => $$('.pf-card').length > 20), 'members see the public portfolio');
+    ok(!/\+998|@portfolio|team_members/.test(view()), 'the public portfolio shows no phone numbers or logins');
+    ok(!$('[data-act="pfcsv"]') && !!$('a[href="#/portfolio/staff"]'), 'no CSV export for the public; a staff sign-in link instead'); }
   click($('[data-act="logout"]')); await wait(10); await go('#/login'); ok(!!$('a.pf-door[href="#/founder"]'), 'sign-in page links the founder login');
   await go('#/founder'); ok(w.location.hash === '#/founder' && !!$('#pf-login-founder'), 'founder login opens without a demo session');
+  // guest mode
+  await go('#/home'); ok(w.location.hash === '#/portfolio', 'guests land on the public portfolio');
+  ok(w.document.body.classList.contains('guest') && ['portfolio', 'impact', 'founder'].every(k => !!$(`#tabs a[href="#/${k}"]`)), 'guests get a small public menu');
+  await go('#/admin'); ok(w.location.hash.startsWith('#/login'), 'private pages still need a sign-in');
+  if (!process.env.SF_TEST_SKIP_LIVE) { await go('#/portfolio'); ok(await until(() => $$('.pf-card').length > 20), 'guests see the startups');
+    const first = SF.pf.p.rows[0]; ok(first.achievement && !('team_members' in first) && !('phone' in first), 'startups with results come first; no people data reaches guests');
+    SF.S.lang = SF.lang = 'uz'; SF.render(); await wait(20);
+    const secOpts = $$('#pf-sec option').map(o => o.textContent); ok(secOpts.length > 3 && secOpts.includes('Sun’iy intellekt'.slice(0, 0) + SF.t('AI, Data & Cybersecurity')) && !secOpts.some(x => /[а-я]/i.test(x)) && !secOpts.some(x => /\(.*\)/.test(x)), 'sector filter is one clean list in the page language');
+    ok($$('#pf-st option').map(o => o.value).every(v => ['all', 'none', ...SF.PF_STAGES].includes(v)), 'stage filter uses the fixed stages');
+    const sec = $('#pf-sec'); sec.value = 'Edtech'; sec.dispatchEvent(new w.Event('change', { bubbles: true })); await wait(20);
+    ok($$('.pf-card').length > 0 && SF.pfFiltered().every(x => x.sector === 'Edtech'), 'sector filter works');
+    $('#pf-sec').value = 'all'; $('#pf-sec').dispatchEvent(new w.Event('change', { bubbles: true })); await wait(20);
+    ok(SF.pfAch('$80,000 investment from Yoshlar Ventures') === '$80K investitsiya · Yoshlar Ventures', 'results are shortened and translated');
+    SF.S.lang = SF.lang = 'en'; SF.render();
+    await go('#/pstartup/' + first.id); ok(await until(() => /🏆/.test(view())) && !/\+998/.test(view()), 'guest startup page shows the result, no contacts'); }
+  await go('#/founder');
   if (process.env.SF_TEST_SKIP_LIVE || !CRED) { if (!CRED) console.log('SKIP live backend checks: no .test-credentials.json'); return; }
   // wrong password
   fill('pf-l-founder', 'test-alpha'); $('#pf-p-founder').value = 'wrong-password'; submit($('#pf-login-founder'));
@@ -44,19 +64,20 @@ module.exports = async (h) => { await base(h); const { ok, $, $$, click, go, set
   click($('[data-act="pfconfirm"]')); ok(await until(() => !!SF.pf.f.data.confirmed_at && /Confirmed on/.test(view())), 'founder confirms the startup');
   click($('[data-act="pfout"][data-slot="founder"]')); await wait(20); ok(!SF.sb.session('founder') && !!$('#pf-login-founder'), 'founder signs out');
   // Org portfolio
-  const org = SF.S.accounts.find(a => a.role === 'org'); SF.login(org); SF.S.filters.pftest = '1'; SF.render(); await go('#/portfolio'); ok(!!$('#pf-login-org'), 'portfolio asks for a staff sign-in');
+  const org = SF.S.accounts.find(a => a.role === 'org'); SF.login(org); SF.S.filters.pftest = '1'; SF.render(); await go('#/portfolio/staff'); ok(!!$('#pf-login-org'), 'staff sign-in page');
   fill('pf-l-org', 'test-alpha'); $('#pf-p-org').value = CRED['test-alpha']; submit($('#pf-login-org'));
   ok(await until(() => /not on the Startup Fest staff list/.test(view())), 'a founder login cannot open the portfolio');
-  click($('[data-act="pfout"][data-slot="org"]')); await wait(20);
+  click($('[data-act="pfout"][data-slot="org"]')); await wait(20); await go('#/portfolio/staff');
   fill('pf-l-org', 'test-org'); $('#pf-p-org').value = CRED['test-org']; submit($('#pf-login-org'));
-  ok(await until(() => $$('.pf-card').length >= 2), 'staff sees every startup');
+  ok(await until(() => SF.pf.o.status === 'ready' && $$('.pf-card:not(.pf-skel)').length >= 2), 'staff sees every startup');
   const a = SF.pf.o.rows.find(r => r.id === 'T001'); ok(a && a.one_liner === stamp && !!a.confirmed_at, 'portfolio shows the founder’s live changes');
-  click($('[data-act="filter"][data-k="pfs"][data-v="waiting"]')); await wait(20); ok(!$$('.pf-card').some(c => c.textContent.includes('Test Alpha')), 'filter “Waiting” hides confirmed startups');
-  click($('[data-act="filter"][data-k="pfs"][data-v="all"]')); await wait(20);
+  const chk = $('#pf-s'); chk.value = 'waiting'; chk.dispatchEvent(new w.Event('change', { bubbles: true })); await wait(20); ok(!$$('.pf-card').some(c => c.textContent.includes('Test Alpha')), 'filter “Waiting” hides confirmed startups');
+  $('#pf-s').value = 'all'; $('#pf-s').dispatchEvent(new w.Event('change', { bubbles: true })); await wait(20);
   await go('#/pstartup/T001'); ok(await until(() => /History/.test(view()) && /Confirmed the details/.test(view()) && /One-liner/.test(view()) && !/one_liner/.test(view())), 'startup page shows the change history');
   await go('#/portfolio'); click($('[data-act="pfcsv"]')); await wait(10); ok(true, 'CSV export runs');
   SF.S.filters.pftest = ''; click($('[data-act="pfreload"]')); ok(await until(() => SF.pf.o.status === 'ready' && SF.pf.o.rows.length > 2), 'real portfolio loads');
   ok(!SF.pf.o.rows.some(r => r.is_test) && SF.pf.o.rows[0].achievement, 'test startups are hidden and startups with results come first');
-  click($('[data-act="filter"][data-k="pfs"][data-v="success"]')); await wait(20); ok($$('.pf-card').length > 0 && $$('.pf-card').every(c => c.querySelector('.pf-win')), '“With results” shows only startups with a result');
-  click($('[data-act="filter"][data-k="pfs"][data-v="all"]')); await wait(20);
+  const res = $('#pf-res'); res.value = 'yes'; res.dispatchEvent(new w.Event('change', { bubbles: true })); await wait(20); const cards = $$('.pf-card');
+  ok(cards.length > 0 && cards.every(c => c.querySelector('.pf-win')), '“With results” shows only startups with a result');
+  $('#pf-res').value = 'all'; $('#pf-res').dispatchEvent(new w.Event('change', { bubbles: true })); await wait(20);
 };

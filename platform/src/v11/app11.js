@@ -1,16 +1,21 @@
 // v11 actions: founder sign-in and check-in, the Org team's live portfolio
 (() => {
 const t = (s, v) => SF.t(s, v), A = SF.A, S = () => SF.S;
-SF.NAV.org.splice(1, 0, 'portfolio');
+// the portfolio is public: every member type sees it, and so do guests
+Object.keys(SF.NAV).forEach(r => { if (!SF.NAV[r].includes('portfolio')) SF.NAV[r].splice(r === 'org' ? 1 : SF.NAV[r].length - 1, 0, 'portfolio'); });
 Object.assign(SF.LABEL, { portfolio: 'Portfolio', founder: 'My startup' });
 SF.TAB_OF.pstartup = 'portfolio'; SF.TAB_OF.founder = null;
-SF.PUBLIC.push('founder');
-const ORG_ONLY = ['portfolio', 'pstartup'];
+SF.PUBLIC.push('founder', 'portfolio', 'pstartup');
+const GUEST_TABS = ['portfolio', 'impact', 'founder'];
 const icon0 = SF.icon;
 SF.icon = k => k === 'portfolio' ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg>` : icon0(k);
 const render10 = SF.render;
-SF.render = () => { const v = (location.hash || '').split('/')[1]; if (S().session && ORG_ONLY.includes(v) && S().role !== 'org') history.replaceState(null, '', '#/noaccess/' + v);
-  document.body.classList.toggle('founder-page', v === 'founder'); render10(); };
+SF.render = () => { const v = (location.hash || '').split('/')[1] || '';
+  if (!S().session && (!v || v === 'home')) history.replaceState(null, '', '#/portfolio');   // guests land on the public portfolio
+  const v2 = (location.hash || '').split('/')[1] || '';
+  document.body.classList.toggle('founder-page', v2 === 'founder'); render10();
+  const guest = !S().session; document.body.classList.toggle('guest', guest);
+  if (guest) document.getElementById('tabs').innerHTML = GUEST_TABS.map(k => `<a class="tab" href="#/${k}" ${(v2 === k || (k === 'portfolio' && v2 === 'pstartup')) ? 'aria-current="page"' : ''}>${SF.icon(k)}<span>${t(SF.LABEL[k])}</span></a>`).join(''); };
 
 const F = () => SF.pf.f, O = () => SF.pf.o;
 const FIELDS = ['name', 'one_liner', 'sector', 'region', 'link', 'stage', 'status', 'since_catalyst', 'can_recommend'];
@@ -40,7 +45,7 @@ Object.assign(A, {
     try { const at = await SF.sb.rest('founder').rpc('confirm_my_startup', { via: 'web' }); f.data.confirmed_at = at; SF.toast(t('Thank you! Your startup is confirmed.')); }
     catch (e) { f.err = t('Could not save: {e}', { e: e.message }); } f.saving = false; SF.render(); },
   pfout: d => { SF.sb.signOut(d.slot); if (d.slot === 'founder') SF.pf.f = { status: 'idle' }; else { SF.pf.o = { status: 'idle' }; SF.pf.hist = {}; } SF.render(); },
-  pfreload: () => { SF.pf.o.status = 'idle'; SF.pf.hist = {}; SF.render(); },
+  pfreload: () => { SF.pf.o.status = 'idle'; SF.pf.p = { status: 'idle' }; SF.pf.hist = {}; SF.render(); },
   pfpw: () => SF.modal(`<h3>${t('Change my password')}</h3><form id="pf-pw" class="stack"><div class="field"><label for="pf-pw1">${t('New password (at least 8 characters)')}</label><input id="pf-pw1" type="password" minlength="8" autocomplete="new-password" required></div>
     <div class="row end"><button type="button" class="btn ghost" data-close="1">${t('Cancel')}</button><button class="btn">${t('Save')}</button></div></form>`),
   pfcsv: () => { const o = O(), rows = SF.pfFiltered(), q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
@@ -62,7 +67,7 @@ SF.formHandlers = (f, val) => {
     if (Date.now() < tries.until) { st.err = t('Too many wrong passwords. Try again in {m} minutes.', { m: Math.ceil((tries.until - Date.now()) / 60000) }); return SF.render(); }
     st.status = 'signing'; st.err = ''; SF.render();
     SF.sb.signIn(slot, val('pf-l-' + slot), f.querySelector('#pf-p-' + slot).value)
-      .then(() => { tries.n = 0; st.status = 'idle'; SF.render(); })
+      .then(() => { tries.n = 0; st.status = 'idle'; if (slot === 'org' && location.hash === '#/portfolio/staff') return SF.go('#/portfolio'); SF.render(); })
       .catch(e => { tries.n++; if (tries.n >= 5) { tries.until = Date.now() + 15 * 60000; tries.n = 0; }
         st.status = 'idle'; st.err = /invalid/i.test(e.message) ? t('Wrong login or password.') : t('Could not sign in: {e}', { e: e.message }); SF.render(); });
     return; }

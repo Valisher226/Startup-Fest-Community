@@ -61,3 +61,16 @@ Object.assign(SF.DICT.ru, {
 "Team member added": "Добавлен участник", "Team member removed": "Убран участник", "Team member changed": "Изменён участник", "Confirmed the details": "Подтвердил данные",
 "The first real data: the portfolio of startups from past Catalyst batches. Founders sign in with their own startup login, on the website or in the Telegram bot, and confirm their details in two minutes. The Org team sees who has confirmed. Stored in a real database with server-side access rules.": "Первые реальные данные: портфолио стартапов прошлых наборов Catalyst. Основатели входят по логину своего стартапа на сайте или в Telegram-боте и за две минуты подтверждают данные. Команда видит, кто подтвердил. Данные хранятся в настоящей базе с проверкой доступа на сервере.",
 });
+// v11.1: public portfolio and simpler filters
+Object.assign(SF.DICT.uz, {
+"All": "Hammasi", "Could not load the portfolio. Check the internet connection and refresh.": "Portfolio yuklanmadi. Internetni tekshirib, sahifani yangilang.", "Batch": "Dastur", "Results": "Natija", "Check-in": "Tasdiq", "Search": "Qidiruv", "Startup or person": "Startap yoki odam", "Startup": "Startap",
+"Staff sign-in": "Xodimlar uchun kirish", "Staff sign-in: contacts, check-in status and history.": "Xodimlar uchun: aloqa ma’lumotlari, tasdiq holati va tarix.",
+"raised": "jalb qilingan", "with results": "natijaga erishgan", "confirmed": "tasdiqlangan", "batches": "dastur", "Nothing found.": "Hech narsa topilmadi.", "Not specified": "Ko‘rsatilmagan",
+"Confirmed by the founder": "Asoschi tasdiqlagan", "{n} people": "{n} kishi", "Pitched": "Pitch qildi", "Selected": "Saralangan", "Accepted": "Qabul qilingan", "Selected team": "Saralangan jamoa", "Hackathon team {n}: {p}": "Hakaton jamoasi {n}: {p}",
+});
+Object.assign(SF.DICT.ru, {
+"All": "Все", "Could not load the portfolio. Check the internet connection and refresh.": "Не удалось загрузить портфолио. Проверьте интернет и обновите страницу.", "Batch": "Набор", "Results": "Результат", "Check-in": "Подтверждение", "Search": "Поиск", "Startup or person": "Стартап или человек", "Startup": "Стартап",
+"Staff sign-in": "Вход для сотрудников", "Staff sign-in: contacts, check-in status and history.": "Для сотрудников: контакты, статус подтверждения и история.",
+"raised": "привлечено", "with results": "с результатами", "confirmed": "подтвердили", "batches": "наборов", "Nothing found.": "Ничего не найдено.", "Not specified": "Не указано",
+"Confirmed by the founder": "Подтверждено основателем", "{n} people": "{n} чел.", "Pitched": "Выступил с питчем", "Selected": "Отобран", "Accepted": "Принят", "Selected team": "Отобранная команда", "Hackathon team {n}: {p}": "Команда хакатона {n}: {p}",
+});

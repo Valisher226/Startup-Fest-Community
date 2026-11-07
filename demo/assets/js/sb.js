@@ -48,5 +48,7 @@ const rest = slot => {
   };
 };
 
-SF.sb = { signIn, signOut, session, rest, SbError, DOMAIN };
+// read-only public data for guests (only views granted to anon)
+const anon = path => call('/rest/v1/' + path);
+SF.sb = { signIn, signOut, session, rest, anon, SbError, DOMAIN };
 })();
