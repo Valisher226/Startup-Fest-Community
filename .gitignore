@@ -5,3 +5,6 @@ build/
 keys*.json
 miss*.json
 new*.json
+
+# local test passwords for the live backend
+platform/.test-credentials.json

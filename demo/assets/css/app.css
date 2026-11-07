@@ -525,3 +525,21 @@ body.signed-out .navbar .tabs{flex:1}
 .rg b{font-family:var(--f-display);font-size:24px}.rg span{font-size:12px}
 .impact-link{color:#fff;font-weight:600;position:relative}
 @media (max-width:860px){.region-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pb-preview{position:static}}
+
+/* v11: founder check-in and the live portfolio */
+.pf-sum{display:grid;gap:10px;margin:0}
+.pf-sum div{display:grid;grid-template-columns:minmax(120px,30%) 1fr;gap:12px;align-items:baseline;border-bottom:1px solid var(--border);padding-bottom:8px}
+.pf-sum dt{font-size:13px;color:var(--muted)}
+.pf-sum dd{margin:0;overflow-wrap:anywhere}
+.pf-wizard textarea{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--border);border-radius:12px;resize:vertical}
+.pf-card{color:inherit;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.pf-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px #0000001a}
+.alert.ok{background:var(--ok-bg);color:var(--ok);border-color:transparent}
+body.founder-page .tabs,body.founder-page .bell,body.founder-page #role{visibility:hidden}
+@media (max-width:640px){.pf-sum div{grid-template-columns:1fr;gap:2px}}
+/* founders see a clean page: no demo menus, buttons or demo footer */
+body.founder-page #usermenu,body.founder-page #joinbtn,body.founder-page .burger,body.founder-page #demotools,body.founder-page #demotag,body.founder-page #foot-nav{display:none!important}
+.pf-add{display:grid;grid-template-columns:1fr 160px auto;gap:8px}
+.pf-hist li{border-bottom:1px solid var(--border);padding-bottom:6px}
+@media (max-width:640px){.pf-add{grid-template-columns:1fr}.pf-add .btn{justify-self:start}}
+.pf-win{color:var(--brand);line-height:1.35}

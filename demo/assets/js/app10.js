@@ -49,5 +49,5 @@ SF.formHandlers = (f, val) => {
     audit('Added a partner country', c); SF.closeModal(); SF.toast(t('{c} added', { c })); return SF.go('#/instance/' + k); }
   return fh9(f, val);
 };
-SF.boot();
+
 })();

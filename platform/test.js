@@ -10,6 +10,7 @@ const dom = new JSDOM(html, { runScripts: 'dangerously', url: 'http://localhost/
 const w = dom.window, d = w.document;
 w.addEventListener('error', e => errors.push(e.message));
 w.scrollTo = () => {}; w.URL.createObjectURL = () => 'blob:demo';
+w.fetch = w.fetch || ((u, o) => fetch(u, o)); w.confirm = () => true; // v11 talks to the real backend
 const wait = ms => new Promise(r => setTimeout(r, ms));
 const $ = s => d.querySelector(s), $$ = s => [...d.querySelectorAll(s)];
 const click = el => { if (!el) throw new Error('missing element'); el.dispatchEvent(new w.MouseEvent('click', { bubbles: true })); };
