@@ -86,10 +86,14 @@ const ACH = [
   [/^\$([\d,]+) from (.+)$/i, (m) => ({ en: `${k$(+m[1].replace(/,/g, ''))} · ${m[2]}`, uz: `${k$(+m[1].replace(/,/g, ''))} · ${m[2]}`, ru: `${k$(+m[1].replace(/,/g, ''))} · ${m[2]}` })],
   [/^(\d)(?:st|nd|rd|th) place(?: \(team project: (.+)\))?$/i, (m) => ({ en: `${m[1]}${['st', 'nd', 'rd'][m[1] - 1] || 'th'} place`, uz: `${m[1]}-o‘rin`, ru: `${m[1]} место` })],
   [/^Pilot contract with (.+)$/i, (m) => ({ en: `Pilot contract · ${m[1]}`, uz: `Pilot shartnoma · ${m[1]}`, ru: `Пилотный контракт · ${m[1]}` })],
+  // UzCombinator Demo Day: investors' soft commitments, not money received
+  [/^\$([\d,]+) soft commitment at (.+)$/i, (m) => ({ en: `${k$(+m[1].replace(/,/g, ''))} committed · ${m[2]}`, uz: `${k$(+m[1].replace(/,/g, ''))} investitsiya va’dasi · ${m[2]}`, ru: `${k$(+m[1].replace(/,/g, ''))} обещано инвесторами · ${m[2]}` })],
 ];
 SF.pfAch = text => String(text || '').split(/;\s*|\s+\+\s+/).filter(Boolean).map(seg => { seg = seg.trim();
   for (const [re, f] of ACH) { const m = seg.match(re); if (m) { const o = f(m); return o[SF.lang] || o.en; } } return seg; }).join(' · ');
-SF.pfRaised = rows => rows.reduce((a, s) => a + [...String(s.achievement || '').matchAll(/\$([\d,]+)/g)].reduce((x, m) => x + +m[1].replace(/,/g, ''), 0), 0);
+// money actually raised; Demo Day soft commitments are promises, so they are not counted
+SF.pfRaised = rows => rows.reduce((a, s) => a + String(s.achievement || '').split(/;\s*/).filter(seg => !/soft commitment/i.test(seg))
+  .reduce((x, seg) => x + [...seg.matchAll(/\$([\d,]+)/g)].reduce((y, m) => y + +m[1].replace(/,/g, ''), 0), 0), 0);
 const RESULT = [[/^Pitched$/, 'Pitched'], [/^Selected startup$/, 'Selected'], [/^Accepted$/, 'Accepted'], [/^Selected cybersecurity team$/, 'Selected team'], [/^Hackathon team (\d+): (.+)$/, 'Hackathon team {n}: {p}']];
 const result = r => { if (/\$|place|pilot/i.test(r || '')) return SF.pfAch(r); for (const [re, k] of RESULT) { const m = String(r || '').match(re); if (m) return t(k, { n: m[1], p: m[2] }); } return r || ''; };
 const shortBatch = b => (b && b.name ? b.name : '').replace('Catalyst × ', '');

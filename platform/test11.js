@@ -29,6 +29,8 @@ module.exports = async (h) => { await base(h); const { ok, $, $$, click, go, set
     ok($$('.pf-card').length > 0 && SF.pfFiltered().every(x => x.sector === 'Edtech'), 'sector filter works');
     $('#pf-sec').value = 'all'; $('#pf-sec').dispatchEvent(new w.Event('change', { bubbles: true })); await wait(20);
     ok(SF.pfAch('$80,000 investment from Yoshlar Ventures') === '$80K investitsiya · Yoshlar Ventures', 'results are shortened and translated');
+    ok(SF.pfAch('$800,000 soft commitment at UzCombinator Demo Day') === '$800K investitsiya va’dasi · UzCombinator Demo Day', 'Demo Day soft commitments are shown as promises');
+    ok(SF.pfRaised([{ achievement: '$100,000 investment from Yoshlar Ventures; $800,000 soft commitment at UzCombinator Demo Day' }, { achievement: '$40,000 soft commitment at UzCombinator Demo Day' }]) === 100000, 'soft commitments are not counted as raised');
     SF.S.lang = SF.lang = 'en'; SF.render();
     await go('#/pstartup/' + first.id); ok(await until(() => /🏆/.test(view())) && !/\+998/.test(view()), 'guest startup page shows the result, no contacts'); }
   await go('#/founder');
