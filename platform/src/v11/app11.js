@@ -15,7 +15,12 @@ SF.render = () => { const v = (location.hash || '').split('/')[1] || '';
   const v2 = (location.hash || '').split('/')[1] || '';
   document.body.classList.toggle('founder-page', v2 === 'founder'); render10();
   const guest = !S().session; document.body.classList.toggle('guest', guest);
-  if (guest) document.getElementById('tabs').innerHTML = GUEST_TABS.map(k => `<a class="tab" href="#/${k}" ${(v2 === k || (k === 'portfolio' && v2 === 'pstartup')) ? 'aria-current="page"' : ''}>${SF.icon(k)}<span>${t(SF.LABEL[k])}</span></a>`).join(''); };
+  if (guest) document.getElementById('tabs').innerHTML = GUEST_TABS.map(k => `<a class="tab" href="#/${k}" ${(v2 === k || (k === 'portfolio' && v2 === 'pstartup')) ? 'aria-current="page"' : ''}>${SF.icon(k)}<span>${t(SF.LABEL[k])}</span></a>`).join('')
+    + `<a class="tab sf-site" href="${SF.siteUrl()}">${SF.icon('home')}<span>${t('Startup Fest website')}</span></a>`;
+  // everyone: the copy of startupfest.uz (site/) from the footer
+  const fn = document.getElementById('foot-nav'); if (fn && !fn.querySelector('.sf-site')) fn.insertAdjacentHTML('beforeend', `<a class="sf-site" href="${SF.siteUrl()}">${t('Startup Fest website')}</a>`); };
+// copy of startupfest.uz hosted next to the app; it has Uzbek and English pages only
+SF.siteUrl = () => `site/${SF.lang === 'en' ? 'en' : 'uz'}/index.html`;
 
 const F = () => SF.pf.f, O = () => SF.pf.o;
 const FIELDS = ['name', 'one_liner', 'sector', 'region', 'link', 'stage', 'status', 'since_catalyst', 'can_recommend'];

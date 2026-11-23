@@ -1,0 +1,11 @@
+<svg preserveAspectRatio="none" width="572" height="165" viewBox="0 0 572 165" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!-- The hero Programs widget silhouette, taken verbatim from union.svg.
+     One shape, not a tab rectangle stacked on a panel rectangle: the two
+     meet through 18px concave fillets, and those are what make the joint
+     read as a smooth S instead of a right angled step. Used as a CSS mask
+     so the gradient stays a CSS token and scales with the design unit.
+
+     Keep double hyphens out of this comment: they are illegal inside an
+     XML comment, and a malformed mask silently masks the element away. -->
+<path d="M416 38C416 47.9411 424.059 56 434 56H554C563.941 56 572 64.0589 572 74V147C572 156.941 563.941 165 554 165H18C8.05886 165 0 156.941 0 147V74C0 64.0589 8.05887 56 18 56H138C147.941 56 156 47.9411 156 38V18C156 8.05888 164.059 0 174 0H398C407.941 0 416 8.05887 416 18V38Z" fill="white"/>
+</svg>

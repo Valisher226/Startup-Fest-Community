@@ -1,0 +1,7 @@
+<svg preserveAspectRatio="none" width="762" height="116.45" viewBox="0 0 762 116.45" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!-- The desktop Programs alcove scaled by 362 / 572, the same factor that
+     turns the desktop selector into its mobile width. This keeps the 20-unit
+     desktop side clearance, the 19-unit top clearance and every convex and
+     concave radius proportional instead of redrawing the cut for phones. -->
+<path d="M0 0H303.49C293.88 0 286.09 7.79 286.09 17.4C286.09 27.01 278.29 34.81 268.68 34.81H209.49C197.26 34.81 187.34 44.72 187.34 56.96V94.3C187.34 106.53 177.43 116.45 165.19 116.45H16C7.16 116.45 0 109.28 0 100.45V0ZM458.51 0H762V100.45C762 109.28 754.84 116.45 746 116.45H596.81C584.57 116.45 574.66 106.53 574.66 94.3V56.96C574.66 44.72 564.74 34.81 552.51 34.81H493.32C483.71 34.81 475.91 27.01 475.91 17.4C475.91 7.79 468.12 0 458.51 0Z" fill="#000000"/>
+</svg>

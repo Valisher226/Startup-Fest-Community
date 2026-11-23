@@ -74,3 +74,6 @@ Object.assign(SF.DICT.ru, {
 "raised": "привлечено", "with results": "с результатами", "confirmed": "подтвердили", "batches": "наборов", "Nothing found.": "Ничего не найдено.", "Not specified": "Не указано",
 "Confirmed by the founder": "Подтверждено основателем", "{n} people": "{n} чел.", "Pitched": "Выступил с питчем", "Selected": "Отобран", "Accepted": "Принят", "Selected team": "Отобранная команда", "Hackathon team {n}: {p}": "Команда хакатона {n}: {p}",
 });
+// link to the hosted copy of startupfest.uz
+Object.assign(SF.DICT.uz, { "Startup Fest website": "Startup Fest sayti" });
+Object.assign(SF.DICT.ru, { "Startup Fest website": "Сайт Startup Fest" });
